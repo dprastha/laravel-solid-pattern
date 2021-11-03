@@ -6,13 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
+use App\Interfaces\UserInterface;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    protected $userInterface;
+
+    public function __construct(UserInterface $userInterface)
+    {
+        $this->userInterface = $userInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        return success(
-            'Successful get Users',
-            UserResource::collection($users),
-        );
+        return $this->userInterface->getUsers();
     }
 
     /**
@@ -82,7 +84,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         try {
-            $data = DB::transaction(function () use ($request, $user) {
+            DB::transaction(function () use ($request, $user) {
                 $user->update([
                     'name' => $request->name,
                     'email' => $request->email,
@@ -98,10 +100,7 @@ class UserController extends Controller
             return error(
                 'Failed to update User'
             );
-        }
-        
-
-        return new UserResource($data);
+        }        
     }
 
     /**
@@ -123,6 +122,5 @@ class UserController extends Controller
                 'Failed to delete User'
             );
         }
-        
     }
 }
