@@ -8,8 +8,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Interfaces\UserInterface;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -38,26 +36,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        try {
-            $user = DB::transaction(function () use ($request) {
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password)
-                ]);
-
-                return $user;
-            });
-            
-            return success(
-                'Successfuly created User',
-                new UserResource($user),
-            );
-        } catch (\Throwable $th) {
-            return error(
-                'Failed to create User'
-            );
-        }
+        return $this->userInterface->createUser($request);
     }
 
     /**
@@ -68,10 +47,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return success(
-            'Successfully get user data',
-            new UserResource($user)
-        );
+        return $this->userInterface->getUserById($user);
     }
 
     /**
@@ -83,24 +59,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        try {
-            DB::transaction(function () use ($request, $user) {
-                $user->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password)
-                ]);
-            });
-
-            return success(
-                'Successfully updated User',
-                new UserResource($user)
-            );
-        } catch (\Throwable $th) {
-            return error(
-                'Failed to update User'
-            );
-        }        
+        return $this->userInterface->editUser($request, $user);
     }
 
     /**
@@ -111,16 +70,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        try {
-            $user->delete();
-
-            return success(
-                'Successfully deleted User'
-            );
-        } catch (\Throwable $th) {
-            return error(
-                'Failed to delete User'
-            );
-        }
+        return $this->userInterface->deleteUser($user);
     }
 }

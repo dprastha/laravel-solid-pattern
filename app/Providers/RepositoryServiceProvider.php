@@ -6,12 +6,11 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-  public function register()
-  {
-    $this->app->bind(
-      'App\Interfaces\UserInterface',
-      'App\Repositories\UserRepository'
-    );
-  }
-  
+    public function register()
+    {
+        $this->app->bind(
+            'App\Interfaces\UserInterface',
+            'App\Repositories\UserRepository'
+        );
+    }
 }
