@@ -10,7 +10,12 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             'App\Interfaces\UserInterface\UserInterface',
-            'App\Repositories\UserRepository\UserRepository'
+            'App\Repositories\UserRepository\UserRepository',
+        );
+
+        $this->app->bind(
+            'App\Interfaces\PostInterface\PostInterface',
+            'App\Repositories\PostRepository\PostRepository',
         );
     }
 }

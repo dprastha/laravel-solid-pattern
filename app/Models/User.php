@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Comment::class, Post::class);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id');
+    }
 }

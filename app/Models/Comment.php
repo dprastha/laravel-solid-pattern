@@ -11,4 +11,9 @@ class Comment extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
+    public function comment()
+    {
+        return $this->belongsTo(Post::class, 'post_id', 'id');
+    }
 }
