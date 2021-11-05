@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\User\UserResource;
-use App\Interfaces\UserInterface;
+use App\Http\Requests\UserRequest\StoreUserRequest;
+use App\Http\Requests\UserRequest\UpdateUserRequest;
+use App\Interfaces\UserInterface\UserInterface;
 use App\Models\User;
 
 class UserController extends Controller
