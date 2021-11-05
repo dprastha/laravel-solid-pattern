@@ -12,7 +12,7 @@ class CommentRepository implements CommentInterface
 {
     public function getComments()
     {
-        $comments = Comment::with(['post'])->get();
+        $comments = Comment::with(['post', 'user', 'replies'])->get();
 
         return success(
             'Successfully get comments',
@@ -24,7 +24,9 @@ class CommentRepository implements CommentInterface
     {
         $comment = Comment::create([
             'body' => $request->body,
-            'post_id' => $request->post_id
+            'post_id' => $request->post_id,
+            'user_id' => $request->user_id,
+            'parent_id' => $request->parent_id
         ]);
 
         return success(
@@ -37,7 +39,7 @@ class CommentRepository implements CommentInterface
     {
         return success(
             'Successfully get comment',
-            new CommentResource($comment)
+            new CommentResource($comment->loadMissing(['post', 'user', 'replies']))
         );
     }
 
@@ -45,7 +47,9 @@ class CommentRepository implements CommentInterface
     {
         $comment->update([
             'body' => $request->body,
-            'post_id' => $request->post_id
+            'post_id' => $request->post_id,
+            'user_id' => $request->user_id,
+            'parent_id' => $request->parent_id
         ]);
 
         return success(

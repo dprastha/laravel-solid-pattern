@@ -25,6 +25,8 @@ class UpdateCommentRequest extends FormRequest
     {
         return [
             'post_id' => ['required', 'numeric', 'exists:posts,id'],
+            'user_id' => ['required', 'numeric', 'exists:users,id'],
+            'parent_id' => ['nullable', 'numeric', 'exists:comments,id'],
             'body' => ['required', 'string']
         ];
     }
