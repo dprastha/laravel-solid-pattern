@@ -50,6 +50,7 @@ class UserRepository implements UserInterface
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
         return success(
             'Successfully updated ' . $user->name . ' data',
             new UserResource($user)
