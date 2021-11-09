@@ -22,12 +22,7 @@ class CommentRepository implements CommentInterface
 
     public function createComment(StoreCommentRequest $request)
     {
-        $comment = Comment::create([
-            'body' => $request->body,
-            'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
-            'parent_id' => $request->parent_id
-        ]);
+        $comment = Comment::create($request->validated());
 
         return success(
             'Successfully created comment',
@@ -45,12 +40,7 @@ class CommentRepository implements CommentInterface
 
     public function editComment(UpdateCommentRequest $request, Comment $comment)
     {
-        $comment->update([
-            'body' => $request->body,
-            'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
-            'parent_id' => $request->parent_id
-        ]);
+        $comment->update($request->validated());
 
         return success(
             'Successfully updated comment',

@@ -23,11 +23,7 @@ class UserRepository implements UserInterface
 
     public function createUser(StoreUserRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $user = User::create($request->validated());
 
         return success(
             'Successfully created' . $request->name . ' User',
@@ -45,11 +41,8 @@ class UserRepository implements UserInterface
 
     public function editUser(UpdateUserRequest $request, User $user)
     {
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $user->update($request->validated());
+
         return success(
             'Successfully updated ' . $user->name . ' data',
             new UserResource($user)

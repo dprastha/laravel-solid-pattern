@@ -22,11 +22,7 @@ class PostRepository implements PostInterface
 
     public function createPost(StorePostRequest $request)
     {
-        $post = Post::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => $request->user_id
-        ]);
+        $post = Post::create($request->validated());
 
         return success(
             'Successfully created ' . $request->title . ' Post',
@@ -44,11 +40,7 @@ class PostRepository implements PostInterface
 
     public function updatePost(UpdatePostRequest $request, Post $post)
     {
-        $post->update([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => $request->user_id
-        ]);
+        $post->update($request->validated());
 
         return success(
             'Successfully updated ' . $post->title . ' post',
